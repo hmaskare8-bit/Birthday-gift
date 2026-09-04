@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Special Surprise for Kshitija</title>
+  <!-- Confetti Canvas Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Modern Neon Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --neon-pink: #ff007f;
+      --neon-pink-glow: rgba(255, 0, 127, 0.5);
+      --neon-cyan: #00f3ff;
+      --neon-cyan-glow: rgba(0, 243, 255, 0.4);
+      --neon-purple: #9d00ff;
+      --bg-dark: #090914;
+      --card-bg: rgba(18, 18, 32, 0.88);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(255, 0, 127, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(0, 243, 255, 0.18) 0%, transparent 45%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #ffffff;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Ambient Floating Party Elements */
+    .particle {
+      position: absolute;
+      bottom: -60px;
+      font-size: 1.8rem;
+      user-select: none;
+      animation: floatUp 11s linear infinite;
+      z-index: 1;
+      opacity: 0.5;
+      filter: drop-shadow(0 0 8px var(--neon-pink));
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Scene Glass Containers */
+    .stage {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 0, 127, 0.35);
+      box-shadow: 0 0 35px rgba(255, 0, 127, 0.25), inset 0 0 15px rgba(0, 243, 255, 0.1);
+      backdrop-filter: blur(18px);
+      border-radius: 28px;
+      padding: 50px 32px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      animation: entrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .stage.active {
+      display: block;
+    }
+
+    @keyframes entrance {
+      from { opacity: 0; transform: scale(0.92) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .glow-cyan {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 14px var(--neon-cyan);
+    }
+
+    .glow-pink {
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 18px var(--neon-pink-glow));
+    }
+
+    p.subtext {
+      color: #94a3b8;
+      font-size: 1.05rem;
+      margin-bottom: 34px;
+      line-height: 1.6;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 16px 36px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      background: var(--neon-pink);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 0 35px rgba(255, 0, 127, 0.9);
+    }
+
+    /* Interactive CSS Cake */
+    .cake-container {
+      position: relative;
+      width: 220px;
+      height: 190px;
+      margin: 20px auto 35px;
+      cursor: pointer;
+    }
+
+    /* Cake Tiers */
+    .cake-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 10px;
+      width: 200px;
+      height: 70px;
+      background: linear-gradient(180deg, #381a38 0%, #1e0f24 100%);
+      border: 2px solid var(--neon-pink);
+      border-radius: 16px 16px 8px 8px;
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.3);
+    }
+
+    .cake-top {
+      position: absolute;
+      bottom: 60px;
+      left: 30px;
+      width: 160px;
+      height: 60px;
+      background: linear-gradient(180deg, #1b3548 0%, #0f1c29 100%);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 14px 14px 6px 6px;
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+    }
+
+    /* Exactly Two Candles */
+    .candle {
+      position: absolute;
+      bottom: 120px;
+      width: 14px;
+      height: 48px;
+      background: repeating-linear-gradient(45deg, #fff, #fff 6px, var(--neon-pink) 6px, var(--neon-pink) 12px);
+      border-radius: 4px;
+      z-index: 5;
+    }
+
+    .candle-left { left: 70px; }
+    .candle-right { left: 136px; }
+
+    /* Flames */
+    .flame {
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 24px;
+      background: linear-gradient(180deg, #fff 0%, #ffd700 45%, #ff4500 100%);
+      border-radius: 50% 50% 35% 35%;
+      box-shadow: 0 0 16px #ffae00, 0 0 25px var(--neon-pink);
+      animation: flicker 0.6s infinite alternate ease-in-out;
+      transition: all 0.4s ease;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+      100% { transform: translateX(-50%) scale(1.12) rotate(3deg); }
+    }
+
+    /* Blown State */
+    .flame.off {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-12px) scale(0.2);
+      filter: blur(4px);
+    }
+
+    .smoke {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .flame.off + .smoke {
+      animation: smokeRise 1.2s forwards ease-out;
+    }
+
+    @keyframes smokeRise {
+      0% { opacity: 0.8; transform: translate(-50%, 0) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -40px) scale(2.5); filter: blur(4px); }
+    }
+
+    /* Ambient Audio Badge */
+    .audio-badge {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(18, 18, 32, 0.85);
+      border: 1px solid var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      color: var(--neon-cyan);
+      z-index: 100;
+    }
+
+    .audio-badge.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Continuous Background Music Loop -->
+  <audio id="bgAudio" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f792cb.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Ambient Floating Emojis -->
+  <div class="particle" style="left: 10%; animation-delay: 0s;">🎈</div>
+  <div class="particle" style="left: 28%; animation-delay: 5s;">✨</div>
+  <div class="particle" style="left: 52%; animation-delay: 2s;">🎉</div>
+  <div class="particle" style="left: 75%; animation-delay: 6s;">⚡</div>
+  <div class="particle" style="left: 90%; animation-delay: 3s;">🎂</div>
+
+  <!-- Music Status Indicator -->
+  <div class="audio-badge" id="audioBadge">
+    <span>🎵 Birthday Music Playing</span>
+  </div>
+
+  <!-- Stage 1: Initial Message Screen -->
+  <div class="stage active" id="stage1">
+    <h1 class="glow-cyan">There is something for you...</h1>
+    <p class="subtext">A special moment has been prepared just for your day.</p>
+    <button class="btn" onclick="startSurprise()">See Next ➜</button>
+  </div>
+
+  <!-- Stage 2: Birthday Cake with 2 Candles -->
+  <div class="stage" id="stage2">
+    <h1>Make a Wish!</h1>
+    <p class="subtext">Click the cake or candles to blow them out ✨</p>
+    
+    <div class="cake-container" onclick="blowCandles()">
+      <!-- Candle 1 -->
+      <div class="candle candle-left">
+        <div class="flame" id="flame1"></div>
+        <div class="smoke"></div>
+      </div>
+      <!-- Candle 2 -->
+      <div class="candle candle-right">
+        <div class="flame" id="flame2"></div>
+        <div class="smoke"></div>
+      </div>
+      <!-- Cake Structure -->
+      <div class="cake-top"></div>
+      <div class="cake-bottom"></div>
+    </div>
+  </div>
+
+  <!-- Stage 3: Pop-up Message -->
+  <div class="stage" id="stage3">
+    <h1>Happy Birthday, <br><span class="glow-pink">Kshitija!</span></h1>
+    <p class="subtext">
+      Wishing you endless joy, big smiles, great health, and another brilliant year of achieving everything your heart desires! 🥂✨
+    </p>
+    <button class="btn" onclick="triggerNeonShower()">Celebrate Again 🎉</button>
+  </div>
+
+  <script>
+    const audio = document.getElementById('bgAudio');
+    const badge = document.getElementById('audioBadge');
+    let extinguished = false;
+
+    // Step 1 -> Step 2: Start continuous audio & show cake
+    function startSurprise() {
+      audio.play().then(() => {
+        badge.classList.add('show');
+      }).catch(err => {
+        console.warn('Audio auto-play policy restriction:', err);
+      });
+
+      document.getElementById('stage1').classList.remove('active');
+      document.getElementById('stage2').classList.add('active');
+    }
+
+    // Step 2 -> Step 3: Blow out candles & show final message
+    function blowCandles() {
+      if (extinguished) return;
+      extinguished = true;
+
+      // Extinguish both flames
+      document.getElementById('flame1').classList.add('off');
+      document.getElementById('flame2').classList.add('off');
+
+      // Quick spark burst on blow out
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: ['#ff007f', '#00f3ff', '#ffffff']
+      });
+
+      // Transition to final birthday message
+      setTimeout(() => {
+        document.getElementById('stage2').classList.remove('active');
+        document.getElementById('stage3').classList.add('active');
+        triggerNeonShower();
+      }, 900);
+    }
+
+    // Continuous celebratory neon confetti animation
+    function triggerNeonShower() {
+      const colors = ['#ff007f', '#00f3ff', '#9d00ff', '#ffffff', '#ffe600'];
+      const duration = 2.5 * 1000;
+      const end = Date.now() + duration;
+
+      const interval = setInterval(function() {
+        const timeLeft = end - Date.now();
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 65,
+          origin: { x: 0, y: 0.7 },
+          colors: colors
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 65,
+          origin: { x: 1, y: 0.7 },
+          colors: colors
+        });
+      }, 50);
+    }
+  </script>
+</body>
+</html>
